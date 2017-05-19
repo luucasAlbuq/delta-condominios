@@ -1,0 +1,7 @@
+<div class="form-group">
+	<br>
+	<label>Condominio: </label> 
+	<input type="text" required ng-model="condominio"
+		typeahead="condominio_s as condominio_s.nome for condominio_s in condominios"
+		class="form-control">
+</div>

@@ -1,0 +1,72 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+# Map static resources from the /public folder to the /assets URL path
+
+# REST de Condominio
+POST 	/api/condominio					controllers.rest.CondominioREST.cadastraCondominio()
+GET 	/api/condominio					controllers.rest.CondominioREST.getCondominios(page:Int ?=1, pageSize:Int ?=10, sindicoId:Int ?=-1)
+GET 	/api/condominio/:id				controllers.rest.CondominioREST.getCondominio(id: Long)
+PUT 	/api/condominio/:id				controllers.rest.CondominioREST.putCondiminio(id: Long)
+DELETE	/api/condominio/:id				controllers.rest.CondominioREST.deleteCondominio(id: Long)
+
+# REST de Predio
+POST 	/api/condominio/:id/predio								controllers.rest.PredioREST.cadastraPredio(id: Long)
+GET 	/api/condominio/:idCondominio/predio/:id				controllers.rest.PredioREST.getPredio(idCondominio: Long, id:Long)
+GET		/api/condominio/:idCondominio/predio					controllers.rest.PredioREST.getPrediosDoCondominio(idCondominio: Long)
+GET 	/api/predio												controllers.rest.PredioREST.getPredios(page:Int ?=1, pageSize:Int ?=10)
+PUT 	/api/condominio/:idCondominio/predio/:id				controllers.rest.PredioREST.putPredio(idCondominio: Long, id:Long)
+DELETE	/api/condominio/:idCondominio/predio/:id				controllers.rest.PredioREST.deletePredio(idCondominio: Long,id: Long)
+
+#REST de Apartamento
+POST 	/api/condominio/:idCondominio/predio/:idPredio/apartamento			controllers.rest.ApartamentoREST.cadastraApartamento(idCondominio: Long, idPredio: Long)
+PUT	 	/api/condominio/:idCondominio/predio/:idPredio/apartamento/:id		controllers.rest.ApartamentoREST.putApartamento(idCondominio: Long, idPredio: Long,id: Long)
+GET	 	/api/condominio/:idCondominio/predio/:idPredio/apartamento			controllers.rest.ApartamentoREST.getApartamentoPredio(idCondominio: Long, idPredio: Long)
+GET		/api/condominio/:idCondominio/predio/:idPredio/apartamento/:id		controllers.rest.ApartamentoREST.getApartamento(idCondominio: Long, idPredio: Long,id: Long)
+GET	 	/api/apartamento													controllers.rest.ApartamentoREST.getApartamentos(page:Int ?=1, pageSize:Int ?=10)
+
+#REST de Pessoa
+POST	/api/pessoa			controllers.rest.PessoaREST.cadastraPessoa()
+GET		/api/pessoa/:id		controllers.rest.PessoaREST.getPessoa(id: Long)
+GET		/api/pessoa			controllers.rest.PessoaREST.getAllPessoa(page:Int ?=1, pageSize:Int ?=10)
+PUT		/api/pessoa/:id		controllers.rest.PessoaREST.putPessoa(id: Long)
+DELETE	/api/pessoa/:id		controllers.rest.PessoaREST.deletePessoa(id: Long)
+
+#REST de Usuario
+POST	/api/usuario			controllers.rest.UsuarioREST.cadastraUsuario()
+GET		/api/usuario/:id		controllers.rest.UsuarioREST.consultaUsuario(id: Long)
+GET		/api/usuario			controllers.rest.UsuarioREST.consultaTodosUsuarios(page:Int ?=1, pageSize:Int ?=10)
+PUT		/api/usuario/:id		controllers.rest.UsuarioREST.atualizaUsuario(id: Long)
+DELETE	/api/usuario/:id		controllers.rest.UsuarioREST.deleteUsuario(id: Long)
+
+#REST de Conta
+POST 	/api/condominio/:idCondominio/conta				controllers.rest.ContaREST.cadastraConta(idCondominio: Long)
+POST 	/api/condominio/:idCondominio/conta/:idConta/documento		controllers.rest.ContaREST.uploadDocumento(idCondominio: Long, idConta: Long)
+GET 	/api/condominio/:idCondominio/conta/:idConta/documento		controllers.rest.ContaREST.getDocumento(idCondominio: Long, idConta: Long)
+PUT		/api/condominio/:idCondominio/conta/:idConta	controllers.rest.ContaREST.putConta(idCondominio: Long, idConta: Long)
+GET		/api/condominio/:idCondominio/conta/:idConta	controllers.rest.ContaREST.getConta(idCondominio: Long, idConta: Long)
+GET		/api/condominio/:idCondominio/conta				controllers.rest.ContaREST.getContasCondominio(mesInicio: play.libs.F.Option[String],mesFim: play.libs.F.Option[String], idCondominio: Long)
+DELETE	/api/condominio/:idCondominio/conta/:idConta	controllers.rest.ContaREST.deleteConta(idCondominio: Long, idConta:Long)
+
+#REST AVISO
+POST 	/api/condominio/:idCondominio/aviso				controllers.rest.AvisoREST.cadastrarAviso(idCondominio: Long)
+GET 	/api/condominio/:idCondominio/aviso				controllers.rest.AvisoREST.getAvisos(idCondominio: Long)
+
+
+#Login
+GET /api/login				controllers.rest.AuthREST.login()
+
+# Home page
+
+# Map static resources from the /public folder to the /assets URL path
+GET      /assets/*file          controllers.Assets.at(path="/public", file)
+
+GET 	 /app/bower_components/*file		controllers.Assets.at(path="/public/bower_components", file)
+GET 	 /app/views/*file		controllers.Assets.at(path="/public/app/views", file)
+GET 	 /app/scripts/*file		controllers.Assets.at(path="/public/app/scripts", file)
+GET 	 /app/js/*file			controllers.Assets.at(path="/public/app/js", file)
+
+# Play routes serving HTML to AngularJS start with /views
+GET      /app/*any            controllers.Application.loadPublicHTML(any)
+
+GET		 /    				  controllers.Default.redirect(to = "/app/login")

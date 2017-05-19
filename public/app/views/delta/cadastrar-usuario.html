@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="margin-top: -15%;">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Cadastro de Usuário</h3>
+                </div>
+                <div class="panel-body">
+                    <form novalidate role="form" name="formCadastrarUsuario" data-ng-submit="usuarioCtrl.salvarUsuario()">
+                        <fieldset>
+                          <div class="form-group">
+                                <input class="form-control" required="true" data-ng-model="usuarioCtrl.usuario.nome" placeholder="Nome" type="text" autofocus>
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control" required="true" data-ng-model="usuarioCtrl.usuario.login" placeholder="Login" type="text" autofocus>
+                            </div>
+                            
+                            <label>Papel</label>
+                            <br>
+                            <input type="radio" name="administrador" data-ng-model="usuarioCtrl.usuario.role" value="ADMIN" checked>Administrador
+                            <br>
+                            <input type="radio" name="sindico" data-ng-model="usuarioCtrl.usuario.role" value="SINDICO">Síndico
+                            <br>
+                            <input type="radio" name="morador" data-ng-model="usuarioCtrl.usuario.role" value="USUARIO">Morador
+
+							<div data-ng-show="usuarioCtrl.usuario.role === 'USUARIO'" data-selecionar-pessoa data-modelo="usuarioCtrl.usuario.pessoa"></div>
+							<div data-ng-show="usuarioCtrl.usuario.role !== 'USUARIO'" data-selecionar-condominio data-condominio="usuarioCtrl.usuario.condominio"></div>
+							
+                            <div class="form-group">
+                                <input class="form-control" required="true" data-ng-model="usuarioCtrl.usuario.senha"  placeholder="Senha" type="password" value="">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" required="true" placeholder="Repetir Senha"  type="password" data-ng-model="usuarioCtrl.senha2">
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Cadastrar</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<!-- Checkbox da criação de conta -->
+<div class="form-group">
+	<label class="checkbox-inline">
+		<input type="checkbox" data-ng-model="condominioCtrl.conta.pago" data-ng-change="condominioCtrl.conta.dataPagamento = undefined;" > Pago
+	</label>
+</div>
+
+<!-- Se criação de pago estiver checkado -->
+<div data-ng-show="condominioCtrl.conta.pago" class="form-group">
+	<label>Data de Pagamento: </label>
+	<p class="input-group">
+		<input type="text" ng-disabled="true" class="form-control" datepicker-popup="{{condominioCtrl.dateFormat}}" ng-model="condominioCtrl.conta.dataPagamento" is-open="opened" datepicker-options="condominioCtrl.dateOptions" date-disabled="condominioCtrl.disabled(date, mode)" ng-required="true" close-text="Close" />
+		<span class="input-group-btn">
+			<button type="button" class="btn btn-default" ng-click="condominioCtrl.open($event); opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+		</span>
+	</p>
+</div>

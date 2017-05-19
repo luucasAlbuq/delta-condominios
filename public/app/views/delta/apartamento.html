@@ -1,0 +1,14 @@
+<!-- Checkbox da criação de apartamentos -->
+<div class="form-group">
+	<label class="checkbox-inline">
+		<input type="checkbox" data-ng-model="apartamentoSimilares" data-ng-change="condominioCtrl.apartamentoSelecionado = {};" > Apartamentos Similares
+	</label>
+</div>
+
+<!-- Se criação de apartamento similares estiver checkado -->
+<div data-ng-show="apartamentoSimilares" class="form-group">
+	<input class="form-control"  type="number" placeholder="Área" ng-required="apartamentoSimilares" step="0.1" min="0.1" data-ng-model="condominioCtrl.apartamentoSelecionado.area">
+	<input class="form-control"  type="number" placeholder="Quantidade de Quartos" ng-required="apartamentoSimilares"  step="1" min="1" data-ng-model="condominioCtrl.apartamentoSelecionado.qtQuartos">
+	<input class="form-control"  type="number" placeholder="Quantidade de Banheiros" ng-required="apartamentoSimilares"  step="1" min="1" data-ng-model="condominioCtrl.apartamentoSelecionado.qtBanheiros">
+	<input  class="form-control"  type="number" placeholder="Quantidade de Varandas" ng-required="apartamentoSimilares"  step="1" min="0" data-ng-model="condominioCtrl.apartamentoSelecionado.qtVarandas">
+</div>

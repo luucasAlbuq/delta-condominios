@@ -1,0 +1,170 @@
+[1mdiff --git a/app/views/index.scala.html b/app/views/index.scala.html[m
+[1mindex 4220aac..b49ac2c 100644[m
+[1m--- a/app/views/index.scala.html[m
+[1m+++ b/app/views/index.scala.html[m
+[36m@@ -70,6 +70,7 @@[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/services/CondominioService.js")'></script>[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/services/PessoaService.js")'></script>[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/services/LoginService.js")'></script>[m
+[32m+[m[32m    <script src='@routes.Assets.at(path="/public","app/scripts/services/UsuarioService.js")'></script>[m
+ [m
+     <!-- build:js({.tmp,app}) scripts/scripts.js -->[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/controllers/deltaController.js")'></script>[m
+[36m@@ -77,7 +78,8 @@[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/controllers/PredioController.js")'></script>[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/controllers/PessoaController.js")'></script>[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/controllers/LoginController.js")'></script>[m
+[31m-[m
+[32m+[m	[32m<script src='@routes.Assets.at(path="/public","app/scripts/controllers/CadastroUsuarioController.js")'></script>[m
+[32m+[m[41m	[m
+     [m
+     <!-- Colocar os scripts do delta acima -->[m
+     <script src='@routes.Assets.at(path="/public","app/scripts/app.js")'></script>[m
+[1mdiff --git a/public/app/index.html b/public/app/index.html[m
+[1mindex b36165c..0bfecff 100644[m
+[1m--- a/public/app/index.html[m
+[1m+++ b/public/app/index.html[m
+[36m@@ -45,6 +45,7 @@[m
+     <script src="scripts/services/CondominioService.js"></script>[m
+     <script src="scripts/services/PessoaService.js"></script>[m
+     <script src="scripts/services/LoginService.js"></script>[m
+[32m+[m[32m    <script src="scripts/services/UsuarioService.js"></script>[m
+ [m
+     <!-- build:js({.tmp,app}) scripts/scripts.js -->[m
+     <script src="scripts/controllers/deltaController.js"></script>[m
+[36m@@ -52,7 +53,7 @@[m
+     <script src="scripts/controllers/PredioController.js"></script>[m
+     <script src="scripts/controllers/PessoaController.js"></script>[m
+     <script src="scripts/controllers/LoginController.js"></script>[m
+[31m-[m
+[32m+[m[32m    <script src="scripts/controllers/CadastroUsuarioController.js"></script>[m
+     [m
+     <!-- Colocar os scripts do delta acima -->[m
+     <script src="scripts/app.js"></script>[m
+[1mdiff --git a/public/app/scripts/app.js b/public/app/scripts/app.js[m
+[1mindex f21170a..f3be6b8 100644[m
+[1m--- a/public/app/scripts/app.js[m
+[1m+++ b/public/app/scripts/app.js[m
+[36m@@ -22,6 +22,7 @@[m [mvar delta = angular[m
+     'login',[m
+     'pessoa',[m
+     'usuario'[m
+[32m+[m[41m    [m
+   ]);[m
+ [m
+ [m
+[36m@@ -122,11 +123,18 @@[m [mdelta.config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',functi[m
+         controller: 'PessoaController as pessoaCtrl'[m
+       })[m
+ [m
+[31m-      .state('delta.cadastrar-usuario',{[m
+[32m+[m[32m      .state('delta.editar-usuario',{[m
+         templateUrl:'views/delta/cadastrar-usuario.html',[m
+         url:'/usuario/:id',[m
+         controller: 'CadastroUsuarioController as usuarioCtrl'[m
+       })[m
+[32m+[m
+[32m+[m[32m      .state('delta.cadastrar-usuario',{[m
+[32m+[m[32m        templateUrl:'views/delta/cadastrar-usuario.html',[m
+[32m+[m[32m        url:'/usuario',[m
+[32m+[m[32m        controller: 'CadastroUsuarioController as usuarioCtrl'[m
+[32m+[m[32m      })[m
+[32m+[m
+     // Daqui pra baixo faz parte do template para acessar basta usar /#/dashboard/home[m
+       .state('dashboard', {[m
+         url:'/dashboard',[m
+[1mdiff --git a/public/app/scripts/controllers/CadastroUsuarioController.js b/public/app/scripts/controllers/CadastroUsuarioController.js[m
+[1mindex 94df001..71187cd 100644[m
+[1m--- a/public/app/scripts/controllers/CadastroUsuarioController.js[m
+[1m+++ b/public/app/scripts/controllers/CadastroUsuarioController.js[m
+[36m@@ -1,34 +1,27 @@[m
+[32m+[m[32mvar usuario = angular.module("usuario");[m
+ [m
+[31m-// Módulo da Página inicial do delta-condominios[m
+[31m-var usuario = angular.module("usuario", []);[m
+[31m-[m
+[31m-usuario.controller("PessoaController", ['$state','$stateParams','$http','$resource','UsuarioService', function CadastroUsuarioController($state, $stateParams, $http, $resource, pessoaService) {[m
+[32m+[m[32musuario.controller("CadastroUsuarioController", ['$state','$stateParams','$http','$resource','UsuarioService', function CadastroUsuarioController($state, $stateParams, $http, $resource, usuarioService) {[m
+ 	var self = this;[m
+ 	this.usuario = {};[m
+ [m
+ 	if($stateParams.id) {[m
+[31m-		pessoaService.getPessoa($stateParams.id).then(function(sucess) {[m
+[31m-			self.pessoa = sucess.data;[m
+[32m+[m		[32musuarioService.getUsuario($stateParams.id).then(function(sucess) {[m
+[32m+[m			[32mself.usuario = sucess.data;[m
+ 		});[m
+ 	}else {[m
+[31m-		this.pessoa = {};[m
+[32m+[m		[32mthis.usuario = {};[m
+ 	}[m
+ [m
+ 	/*[m
+[31m-	* Salva pessoa no banco de dados.[m
+[32m+[m	[32m* Salva usuario no banco de dados.[m
+ 	* Mostra um alert com mensagem de sucesso ou falha.[m
+ 	*/[m
+[31m-	this.salvarPessoa = function () {[m
+[31m-		pessoaService.salvarPessoa(this.pessoa).then(function(data, headers) {[m
+[31m-			alert("Pessoa criada com sucesso");[m
+[32m+[m	[32mthis.salvarUsuario = function () {[m
+[32m+[m		[32musuarioService.salvarUsuario(this.usuario).then(function(data, headers) {[m
+[32m+[m			[32malert("usuario criada com sucesso");[m
+ 			$state.go('delta.listar-condominios');[m
+ 		}, function(data) {[m
+[31m-			alert("Falha ao criar uma pessoa");	[m
+[32m+[m			[32malert("Falha ao criar um usuario");[m[41m	[m
+ 		});[m
+ 	}[m
+[31m-[m
+[31m-	pessoaService.getAllPessoas().then(function(sucess){[m
+[31m-		self.pessoas.push.apply(self.pessoas, sucess.data);[m
+[31m-	});[m
+[31m-[m
+ }]);[m
+\ No newline at end of file[m
+[1mdiff --git a/public/app/scripts/directives/header/header-notification/header-notification.html b/public/app/scripts/directives/header/header-notification/header-notification.html[m
+[1mindex 717f47a..0a4b0fd 100644[m
+[1m--- a/public/app/scripts/directives/header/header-notification/header-notification.html[m
+[1m+++ b/public/app/scripts/directives/header/header-notification/header-notification.html[m
+[36m@@ -194,7 +194,7 @@[m
+             <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>[m
+         </a>[m
+         <ul class="dropdown-menu dropdown-user" data-ng-controller="LoginController">[m
+[31m-            <li><a href="#"><i class="fa fa-plus fa-fw"></i> Cadastrar Usuário</a>[m
+[32m+[m[32m            <li ng-show="$root.isAdminLogado()"><a ui-sref="delta.cadastrar-usuario" ><i class="fa fa-plus fa-fw"></i> Cadastrar Usuário</a>[m
+             </li>[m
+             <li><a href="#"><i class="fa fa-user fa-fw"></i> Editar Perfil</a>[m
+             </li>[m
+[1mdiff --git a/public/app/views/delta/cadastrar-usuario.html b/public/app/views/delta/cadastrar-usuario.html[m
+[1mindex e5147b5..a2c1934 100644[m
+[1m--- a/public/app/views/delta/cadastrar-usuario.html[m
+[1m+++ b/public/app/views/delta/cadastrar-usuario.html[m
+[36m@@ -9,22 +9,22 @@[m
+                     <form role="form" data-ng-submit="">[m
+                         <fieldset>[m
+                             <div class="form-group">[m
+[31m-                                <input class="form-control" data-ng-model="nome" placeholder="Nome" type="text" autofocus>[m
+[32m+[m[32m                                <input class="form-control" data-ng-model="usuarioCtrl.usuario.nome" placeholder="Nome" type="text" autofocus>[m
+                             </div>[m
+                             <form>[m
+                                 <label>Papel</label>[m
+[31m-                                <input type="radio" name="administrador" value="administrador" checked>Administrador[m
+[32m+[m[32m                                <input type="radio" name="administrador" data-ng-model="usuarioCtrl.usuario.role" value="ADMIN" checked>Administrador[m
+                                 <br>[m
+[31m-                                <input type="radio" name="sindico" value="sindico">Síndico[m
+[32m+[m[32m                                <input type="radio" name="sindico" data-ng-model="usuarioCtrl.usuario.role" value="SINDICO">Síndico[m
+                                 <br>[m
+[31m-                                <input type="radio" name="morador" value="morador">Morador[m
+[32m+[m[32m                                <input type="radio" name="morador" data-ng-model="usuarioCtrl.usuario.role" value="USUARIO">Morador[m
+                             </form>[m
+ [m
+                             <div class="form-group">[m
+                                 <input class="form-control" name="senha1" placeholder="Senha" type="password" value="">[m
+                             </div>[m
+                             <div class="form-group">[m
+[31m-                                <input class="form-control" name="senha2" data-ng-model="senha" placeholder="Repetir Senha" type="password" value="">[m
+[32m+[m[32m                                <input class="form-control" name="senha2" data-ng-model="usuarioCtrl.usuario.senha" placeholder="Repetir Senha" type="password" value="">[m
+                             </div>[m
+                             <!-- Change this to a button or input when using this as a form -->[m
+                             <button type="submit" class="btn btn-lg btn-success btn-block">Cadastrar</button>[m

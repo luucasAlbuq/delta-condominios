@@ -1,0 +1,67 @@
+<div>
+    <div>
+         <form class="form-horizontal">
+            <fieldset>
+                <!-- Address form -->
+                <!-- address-line1 input-->
+                <div class="panel panel-default">
+                    
+                    <div class="panel-heading">
+                        <h4> 
+                            <i class="fa fa-envelope"/>
+                            Adicionar Endereço
+                        </h4>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label>Endereço: </label>
+                                <input ng-model="condominioCtrl.condominio.endereco.nomeRua" required id="address-line1" name="address-line1" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- city input-->
+                        <div class="form-group">
+                            <div class="controls">
+                                <label>Número: </label>
+                                <input ng-model="condominioCtrl.condominio.endereco.numero" required id="city" name="city" type="text" class="form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <!-- bairro input-->
+                        <div class="form-group">
+                            <div class="controls">
+                                <label>Bairro: </label>
+                                <input ng-model="condominioCtrl.condominio.endereco.bairro" required id="city" name="city" type="text" class="form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <!-- cidade input-->
+                        <div class="form-group">
+                            <div class="controls">
+                                <label>Cidade: </label>
+                                <input ng-model="condominioCtrl.condominio.endereco.cidade" required id="city" name="city" type="text" class="form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <!-- postal-code input-->
+                        <div class="form-group">
+                            <div class="controls">
+                                <label>CEP: </label>
+                                <input id="postal-code" ng-model="condominioCtrl.condominio.endereco.cep" required ui-mask="99.999-999" name="postal-code" type="text" 
+                                class="form-control">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+ 
+            </fieldset>
+        </form>
+    </div>
+</div>
